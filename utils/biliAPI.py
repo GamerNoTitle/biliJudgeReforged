@@ -21,3 +21,9 @@ vote = 'https://api.bilibili.com/x/credit/v2/jury/vote'
 
 # 众议观点
 opinion = 'https://api.bilibili.com/x/credit/v2/jury/case/opinion'
+
+# 案件信息
+case_info = 'https://api.bilibili.com/x/credit/v2/jury/case/info'
+
+# 视频信息
+video_info = 'https://api.bilibili.com/x/web-interface/view'
