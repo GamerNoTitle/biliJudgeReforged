@@ -1,6 +1,7 @@
 import os
 from utils.action import convert_cookies_to_dict, user
 from dotenv import load_dotenv, dotenv_values
+from tqdm import tqdm
 import utils.const as const
 from utils.case import case
 from utils.logger import logger as log
@@ -16,15 +17,15 @@ else:
     logger.status = 0
     logger.debug(
         f'[DEBUG] Successfully set logger level to {loglevel} and output to terminal.')
-SESSDATA, CSRF, OFFSET = dotenv_values()['SESSDATA'], dotenv_values()[
-    'CSRF'], dotenv_values()['OFFSET']
-if SESSDATA == '' or CSRF == '':
+SESSDATA, CSRF, OFFSET, COOKIE = dotenv_values()['SESSDATA'], dotenv_values()[
+    'CSRF'], dotenv_values()['OFFSET'], dotenv_values()['COOKIE']
+if SESSDATA == '' or CSRF == '' or COOKIE == '':
     logger.error(
-        '[ERROR] You must configure SESSDATA and CSRF to use this script!')
+        '[ERROR] You must configure SESSDATA, CSRF and COOKIE to use this script!')
     os._exit(-1)
 else:
     logger.debug(
-        f'[DEBUG] Successfully set SESSDATA to {SESSDATA} and CSRF to {CSRF}, case vote offset has been set to {OFFSET}')
+        f'[DEBUG] Successfully set SESSDATA to {SESSDATA}, CSRF to {CSRF} and COOKIE to {COOKIE}, case vote offset has been set to {OFFSET}')
 UA = dotenv_values()['UA']
 if UA == '':
     UA = const.UA
@@ -41,7 +42,8 @@ headers = {
 
 my = user(SESSDATA, CSRF, UA, logger)
 my.applyFor()
-for case_count in range(1, 21):
+for case_count in tqdm(range(1, 21)):
     cid = my.getCase()
-    c = case(cid, SESSDATA, UA, CSRF, OFFSET, logger)
+    c = case(cid, SESSDATA, UA, CSRF, COOKIE, OFFSET, logger)
+    c.goVote()
     logger.info('[INFO] Done!')

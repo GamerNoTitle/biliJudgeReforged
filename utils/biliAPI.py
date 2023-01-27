@@ -27,3 +27,12 @@ case_info = 'https://api.bilibili.com/x/credit/v2/jury/case/info'
 
 # 视频信息
 video_info = 'https://api.bilibili.com/x/web-interface/view'
+
+# 看视频握手包
+heartbeat = 'https://api.bilibili.com/x/click-interface/web/heartbeat'
+
+# avid转cid
+cid_convert = 'https://api.bilibili.com/x/player/pagelist'
+
+# 案件详细页面
+case_detail = 'https://www.bilibili.com/judgement/case-detail/'

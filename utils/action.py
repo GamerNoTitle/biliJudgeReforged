@@ -29,6 +29,7 @@ class user:
             'User-Agent': self.UA
         }
         response = requests.get(base_info, headers=headers)
+        self.logger.debug(response.text)
         data = json.loads(response.text)
         if data['code'] == -101:
             self.login = False
@@ -42,6 +43,7 @@ class user:
 
     def getQualification(self):
         response = requests.get(qualification, headers=self.headers)
+        self.logger.debug(response.text)
         data = json.loads(response.text)
         if data['code'] == -101:
             self.login, self.blocked, self.cert, self.rule = False, None, None, None
@@ -55,13 +57,10 @@ class user:
     def applyFor(self):
         baseinfo = self.getBaseInfo()
         qualifi = self.getQualification()
-        if self.logger.status:
-            self.logger.debug(baseinfo)
-            self.logger.debug(qualifi)
         if self.login:
             if self.status == 1:
                 self.logger.info('[INFO] Welcome back, JUDGEMENT!')
-            if self.apply_status == 5:
+            elif self.apply_status == 5:
                 pass
             elif not self.blocked and self.cert and self.rule and self.allow_apply and self.apply_status != 5:
                 # 登录，未被小黑屋，有实名，90天内无封禁，允许申请且此周期内没有申请过
