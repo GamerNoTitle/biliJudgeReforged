@@ -9,12 +9,13 @@ from utils.video import video
 
 
 class case:
-    def __init__(self, cid: str, SESSDATA: str, UA: str, CSRF: str, logger: Logger):
+    def __init__(self, cid: str, SESSDATA: str, UA: str, CSRF: str, OFFSET: float, logger: Logger):
         self.cid = cid
         self.SESSDATA = SESSDATA
         self.UA = UA
         self.CSRF = CSRF
         self.logger = logger
+        self.OFFSET = OFFSET
         self.headers = {
             'cookie': self.SESSDATA,
             'Host': 'api.bilibili.com',
@@ -54,7 +55,12 @@ class case:
         if [count for _, count in self.vote_list].count(self.vote_list[0][1]) >= 2:
             self.vote = self.default_vote
         else:
-            self.vote = self.vote_list[0][0]
+            compare = [count for _, count in self.vote_list]
+            compare.remove(self.vote_list[0][1])
+            if round(self.vote_list[0][1] * self.OFFSET - self.vote_list[0][1]) in compare:
+                self.vote = self.default_vote
+            else:
+                self.vote = self.vote_list[0][0]
         self.logger.debug(f'Vote: {self.vote} | Vote List: {self.vote_list}')
 
     def getInfo(self):
