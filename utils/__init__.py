@@ -43,5 +43,5 @@ my = user(SESSDATA, CSRF, UA, logger)
 my.applyFor()
 for case_count in range(1, 21):
     cid = my.getCase()
-    c = case(cid, SESSDATA, UA, CSRF, logger)
+    c = case(cid, SESSDATA, UA, CSRF, OFFSET, logger)
     logger.info('[INFO] Done!')
